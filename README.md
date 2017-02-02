@@ -45,6 +45,16 @@ Augmenting one’s existing fraud detection infrastructure to support ring detec
 
 Real-time graph traversals tied to the right kinds of events can help banks identify probable fraud rings: during or even before the Bust-Out occurs.
 
+#Start Docker Containers
+## Create HDFS
+docker run -i -t --name hdfs sequenceiq/hadoop-docker:2.4.1 /etc/bootstrap.sh -bash
+
+## Create Mazerunner Apache Spark Service
+docker run -i -t --name mazerunner --link hdfs:hdfs kbastani/neo4j-graph-analytics:1.1.0
+
+## Create Neo4j database with links to HDFS and Mazerunner
+docker run -d -P -v /Users/sp1ffygeek/neo4j/data:/opt/data --name graphdb --link mazerunner:mazerunner --link hdfs:hdfs kbastani/docker-neo4j:2.2.1
+
 
 #Bank Fraud Graph Data Model
 
